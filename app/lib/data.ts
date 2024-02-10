@@ -1,14 +1,17 @@
-import { sql } from '@vercel/postgres';
+import { createClient, sql } from '@vercel/postgres';
 import {
   CustomerField,
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
-  User,
   Revenue,
+  User,
 } from './definitions';
 import { formatCurrency } from './utils';
+
+const client = createClient();
+// await client.connect();
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
@@ -27,6 +30,8 @@ export async function fetchRevenue() {
 
     return data.rows;
   } catch (error) {
+    console.log(error);
+
     console.error('Database Error:', error);
     throw new Error('Failed to fetch revenue data.');
   }
